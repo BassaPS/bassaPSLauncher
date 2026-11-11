@@ -1,4 +1,4 @@
-﻿# BASSAPS Launcher v1.1.2 — Windows x64
+# BASSAPS Launcher v1.1.2 — Windows x64
 
 Cyrene LauncherをベースにしたBASSAPS向けランチャーです。
 
@@ -18,6 +18,6 @@ Windows x64 / WebView2 Runtimeが必要です。ゲーム・サーバー・個�
 
 ## 検証・制限
 
-TypeScript、Lint、フロントエンド本番ビルド、UI回帰テスト12件、Goテスト、PEリソースの管理者権限要求を検証しています。UIテストはテスト専用のWails応答を使用しています。
+TypeScript、Lint、フロントエンド本番ビルド、UI回帰テスト13件、Goテスト、PEリソースの管理者権限要求を検証しています。UIテストはテスト専用のWails応答を使用しています。
 
 実ゲーム接続・実アカウントでの承認は未検証です。実行ファイルは未署名です。

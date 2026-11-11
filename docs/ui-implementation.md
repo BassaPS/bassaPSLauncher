@@ -1,4 +1,4 @@
-﻿# BASSAPS Launcher UI/UX 実装記録
+# BASSAPS Launcher UI/UX 実装記録
 
 対象はユーザー指定により、指示書のWebサイトから既存Windowsランチャーへ読み替えています。register.bassaps.comの別リポジトリは変更していません。
 
@@ -90,7 +90,7 @@ UI試験はWails HTTP境界だけをテスト用に応答し、実アカウン�
 - TypeScript `tsc --noEmit`：成功。
 - ESLint：エラー・警告なし。
 - Vite Production Build：成功（JS 743.05kB、gzip 222.98kB）。既存Motionの再利用と画像軽量化を優先しており、JS全体の分割は別途検討の余地があります。
-- Playwright：12件成功。実行時のWails応答はモックです。
+- Playwright：13件成功。実行時のWails応答はモックです。
 - Go `go test ./...`：成功。
 - Windows x64 productionビルド：`bin/BASSAPSLauncher.exe`。通常のランチャーと同じ操作で起動できます。
 - 静的差分の空白検査：成功。
