@@ -145,25 +145,25 @@ export default function NewsPage() {
         if (activeTab === "server" && error === SERVER_NOT_CONFIGURED) {
             return (
                 <div className="flex flex-col items-center justify-center py-20 gap-3 text-center">
-                    <div className="p-4 rounded-full bg-pink-100/60">
-                        <Settings size={36} className="text-pink-400" />
+                    <div className="p-4 rounded-full bg-base-200">
+                        <Settings size={36} className="text-base-content/80" />
                     </div>
                     <p className="text-base-content/70 font-medium">{t("news.empty_server_not_configured")}</p>
-                    <p className="text-sm text-base-content/40 max-w-md">{t("news.empty_server_hint")}</p>
+                    <p className="text-sm text-base-content/60 max-w-md">{t("news.empty_server_hint")}</p>
                 </div>
             )
         }
         if (error) {
             return (
                 <div className="flex flex-col items-center justify-center py-20 gap-3 text-center">
-                    <div className="p-4 rounded-full bg-red-100/60">
-                        <AlertCircle size={36} className="text-red-400" />
+                    <div className="p-4 rounded-full bg-error/10">
+                        <AlertCircle size={36} className="text-error" />
                     </div>
                     <p className="text-base-content/70 font-medium">{t("news.empty_error")}</p>
-                    <p className="text-sm text-base-content/40 max-w-md break-all">{error}</p>
+                    <p className="text-sm text-base-content/60 max-w-md break-all">{error}</p>
                     <button
                         onClick={onRefresh}
-                        className="btn btn-sm mt-2 bg-linear-to-r from-pink-500 to-sky-500 border-none text-white"
+                        className="btn btn-sm mt-2 btn-primary border-none"
                     >
                         <RefreshCw size={14} /> {t("news.btn_retry")}
                     </button>
@@ -172,10 +172,10 @@ export default function NewsPage() {
         }
         return (
             <div className="flex flex-col items-center justify-center py-20 gap-3 text-center">
-                <div className="p-4 rounded-full bg-pink-100/60">
-                    <Newspaper size={36} className="text-pink-300" />
+                <div className="p-4 rounded-full bg-base-200">
+                    <Newspaper size={36} className="text-base-content/80" />
                 </div>
-                <p className="text-base-content/50">{t("news.empty")}</p>
+                <p className="text-base-content/65">{t("news.empty")}</p>
             </div>
         )
     }
@@ -185,15 +185,15 @@ export default function NewsPage() {
             <div className="max-w-6xl mx-auto">
                 {/* Header */}
                 <div className="text-center mb-6">
-                    <h1 className="text-4xl font-bold mb-1 text-transparent bg-clip-text bg-linear-to-r from-pink-500 via-violet-500 to-sky-500">
+                    <h1 className="text-xl font-bold mb-1 text-base-content">
                         {t("news.header_title")}
                     </h1>
-                    <p className="text-base-content/50 text-sm">{t("news.header_desc")}</p>
+                    <p className="text-base-content/65 text-sm">{t("news.header_desc")}</p>
                 </div>
 
                 {/* Tabs + Refresh */}
                 <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
-                    <div className="flex flex-wrap gap-1 bg-white/70 backdrop-blur-md border border-pink-200/50 rounded-2xl p-1 shadow-sm">
+                    <div className="flex flex-wrap gap-1 bg-base-100 backdrop-blur-md border border-base-300 rounded-lg p-1 shadow-sm">
                         {TABS.map(tab => {
                             const Icon = tab.icon
                             const isActive = activeTab === tab.id
@@ -203,8 +203,8 @@ export default function NewsPage() {
                                     onClick={() => setActiveTab(tab.id)}
                                     className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all ${
                                         isActive
-                                            ? "bg-linear-to-r from-pink-500 to-sky-500 text-white shadow-md shadow-pink-200/50"
-                                            : "text-base-content/60 hover:text-pink-500 hover:bg-pink-50/70"
+                                            ? "bg-primary text-white shadow-sm "
+                                            : "text-base-content/70 hover:text-base-content/80 hover:bg-base-300"
                                     }`}
                                 >
                                     <Icon size={15} />
@@ -215,7 +215,7 @@ export default function NewsPage() {
                     </div>
 
                     <button
-                        className="btn btn-sm bg-white/70 backdrop-blur-md border border-pink-200/50 text-base-content/70 hover:bg-pink-50 hover:text-pink-500 gap-2 shadow-sm"
+                        className="btn btn-sm bg-base-100 backdrop-blur-md border border-base-300 text-base-content/70 hover:bg-base-300 hover:text-base-content/80 gap-2 shadow-sm"
                         onClick={onRefresh}
                         disabled={loading}
                     >
@@ -234,8 +234,8 @@ export default function NewsPage() {
                             exit={{ opacity: 0 }}
                             className="flex flex-col items-center justify-center py-20 gap-3"
                         >
-                            <span className="loading loading-spinner loading-lg text-primary"></span>
-                            <p className="text-base-content/50 text-sm">{t("news.loading")}</p>
+                            <span className="loading loading-spinner loading-lg text-info"></span>
+                            <p className="text-base-content/65 text-sm">{t("news.loading")}</p>
                         </motion.div>
                     ) : items.length === 0 ? (
                         <motion.div
@@ -281,7 +281,7 @@ function NewsCard({ item, delay, onOpen }: { item: NewsItem, delay: number, onOp
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay, duration: 0.25 }}
             whileHover={{ y: -3 }}
-            className="group bg-white/90 backdrop-blur-md border border-pink-100 rounded-2xl overflow-hidden hover:border-pink-300 hover:shadow-lg hover:shadow-pink-200/50 transition-all cursor-pointer"
+            className="group bg-base-100 backdrop-blur-md border border-base-300 rounded-lg overflow-hidden hover:border-base-300 hover:shadow-sm  transition-all cursor-pointer"
             onClick={onOpen}
         >
             <div className="h-36 overflow-hidden relative">
@@ -294,23 +294,23 @@ function NewsCard({ item, delay, onOpen }: { item: NewsItem, delay: number, onOp
                         onError={() => setImgError(true)}
                     />
                 ) : (
-                    <div className="w-full h-full flex items-center justify-center bg-linear-to-br from-pink-100 via-violet-100 to-sky-100">
-                        <ImageOff size={28} className="text-pink-300" />
+                    <div className="w-full h-full flex items-center justify-center bg-primary">
+                        <ImageOff size={28} className="text-base-content/80" />
                     </div>
                 )}
             </div>
             <div className="p-4">
                 <div className="flex items-start justify-between gap-2 mb-2">
                     <h3 className="font-semibold text-sm leading-snug line-clamp-2 flex-1 text-base-content">
-                        {item.pinned && <Pin size={13} className="inline-block text-pink-500 mr-1 -mt-0.5" />}
+                        {item.pinned && <Pin size={13} className="inline-block text-base-content/80 mr-1 -mt-0.5" />}
                         {item.title}
                     </h3>
-                    <ExternalLink size={14} className="text-base-content/30 group-hover:text-pink-500 transition-colors shrink-0 mt-0.5" />
+                    <ExternalLink size={14} className="text-base-content/55 group-hover:text-base-content/80 transition-colors shrink-0 mt-0.5" />
                 </div>
                 {item.intro && (
-                    <p className="text-xs text-base-content/50 line-clamp-2 mb-3">{item.intro}</p>
+                    <p className="text-xs text-base-content/65 line-clamp-2 mb-3">{item.intro}</p>
                 )}
-                <span className="text-xs text-base-content/40">{item.time}</span>
+                <span className="text-xs text-base-content/60">{item.time}</span>
             </div>
         </motion.div>
     )

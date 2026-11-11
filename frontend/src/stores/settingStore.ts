@@ -6,7 +6,7 @@ export type ServerTarget = "hoyotoon" | "local_test" | "local_prod" | "custom"
 export type HoneyServerChannel = "test" | "prod"
 
 // March7thHoney server base URLs, shared by game launch and the console tab.
-export const DEFAULT_PATCH_URL = "https://march7th.hoyotoon.com"
+export const DEFAULT_PATCH_URL = "https://hsr.bassaps.com"
 export const LOCAL_SERVER_URL = "http://127.0.0.1:21000"
 
 export function honeyChannelFromTarget(serverTarget: ServerTarget): HoneyServerChannel | null {

@@ -1,3 +1,4 @@
+import useAccountStore from "@/stores/accountStore";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
@@ -10,6 +11,19 @@ import { HandbookService } from "@bindings/cyrene-launcher/internal/handbook-ser
 const LANG_MAP: Record<string, string> = { zh: "CHS", en: "EN", ja: "JP", ko: "KR", vi: "VI" };
 
 export default function ConsolePage() {
+  const isAdmin = useAccountStore((state) => state.user?.role === "admin");
+  return isAdmin ? (
+    <AdminConsole />
+  ) : (
+    <div className="bassaps-denied">
+      <Terminal size={36} />
+      <h1>管理者専用コンソール</h1>
+      <p>この機能を利用する権限がありません。</p>
+      <Link to="/">ホームへ戻る</Link>
+    </div>
+  );
+}
+function AdminConsole() {
     const { t, i18n } = useTranslation();
     const { serverTarget, patchTargetUrl } = useSettingStore();
 
@@ -182,23 +196,23 @@ export default function ConsolePage() {
 
     return (
         <div className="min-h-screen bg-base-200 flex items-center justify-center p-6">
-            <div className="w-full bg-base-100 shadow-xl rounded-2xl p-8 space-y-8">
+            <div className="w-full bg-base-100 shadow-sm rounded-lg p-8 space-y-8">
                 <div className="flex flex-col items-center gap-3">
-                    <h1 className="text-4xl font-bold text-primary text-center flex items-center gap-3">
+                    <h1 className="text-xl font-bold text-base-content text-center flex items-center gap-3">
                         <Terminal className="w-8 h-8" /> {t("console.title")}
                     </h1>
-                    <p className="text-base-content/60 text-center max-w-2xl">{t("console.subtitle")}</p>
+                    <p className="text-base-content/70 text-center max-w-2xl">{t("console.subtitle")}</p>
                 </div>
 
                 {/* Connection */}
-                <div className="bg-blue-50 border-l-4 border-blue-400 p-6 rounded-r-lg">
-                    <h2 className="text-2xl font-bold text-blue-800 flex items-center gap-2 mb-4">
+                <div className="bg-base-200 border-l-4 border-base-300 p-6 rounded-r-lg">
+                    <h2 className="text-lg font-bold text-base-content flex items-center gap-2 mb-4">
                         <Plug size={20} /> {t("console.conn_title")}
                     </h2>
                     <div className="space-y-4">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="flex flex-col gap-1">
-                                <span className="text-sm font-medium text-blue-800">{t("console.label_uid")}</span>
+                                <span className="text-sm font-medium text-base-content">{t("console.label_uid")}</span>
                                 <input
                                     type="text"
                                     inputMode="numeric"
@@ -210,7 +224,7 @@ export default function ConsolePage() {
                                 />
                             </div>
                             <div className="flex flex-col gap-1">
-                                <span className="text-sm font-medium text-blue-800">{t("console.label_password")}</span>
+                                <span className="text-sm font-medium text-base-content">{t("console.label_password")}</span>
                                 <input
                                     type="password"
                                     className="input w-full"
@@ -248,20 +262,20 @@ export default function ConsolePage() {
                 </div>
 
                 {/* Command console */}
-                <div className={`bg-violet-50 border-l-4 border-violet-400 p-6 rounded-r-lg transition-opacity ${connected ? "" : "opacity-50 pointer-events-none"}`}>
-                    <h2 className="text-2xl font-bold text-violet-800 flex items-center gap-2 mb-4">
+                <div className={`bg-base-200 border-l-4 border-base-300 p-6 rounded-r-lg transition-opacity ${connected ? "" : "opacity-50 pointer-events-none"}`}>
+                    <h2 className="text-lg font-bold text-base-content flex items-center gap-2 mb-4">
                         <Terminal size={20} /> {t("console.exec_title")}
                     </h2>
 
                     {/* Output */}
                     <div
                         ref={logRef}
-                        className="bg-white/70 border border-violet-200 text-base-content/80 font-mono text-sm rounded-xl p-4 h-72 overflow-y-auto whitespace-pre-wrap break-words shadow-inner"
+                        className="bg-base-100 border border-base-300 text-base-content/80 font-mono text-sm rounded-xl p-4 h-72 overflow-y-auto whitespace-pre-wrap break-words shadow-inner"
                     >
                         {log.length === 0
-                            ? <span className="text-base-content/30">{t("console.output_empty")}</span>
+                            ? <span className="text-base-content/55">{t("console.output_empty")}</span>
                             : log.map((line, i) => (
-                                <div key={i} className={line.startsWith("!") ? "text-error" : line.startsWith(">") ? "text-violet-600 font-medium" : ""}>
+                                <div key={i} className={line.startsWith("!") ? "text-error" : line.startsWith(">") ? "text-base-content/80 font-medium" : ""}>
                                     {line}
                                 </div>
                             ))}
@@ -270,7 +284,7 @@ export default function ConsolePage() {
                     {/* Input */}
                     <div className="flex items-center gap-2 mt-4">
                         <label className="input flex-1 flex items-center gap-2 font-mono">
-                            <ChevronRight size={16} className="text-violet-400 shrink-0" />
+                            <ChevronRight size={16} className="text-base-content/80 shrink-0" />
                             <input
                                 type="text"
                                 className="grow"
@@ -303,11 +317,11 @@ export default function ConsolePage() {
                 </div>
 
                 {/* Handbook lookup */}
-                <div className="bg-emerald-50 border-l-4 border-emerald-400 p-6 rounded-r-lg">
-                    <h2 className="text-2xl font-bold text-emerald-800 flex items-center gap-2 mb-1">
+                <div className="bg-success/10 border-l-4 border-success/30 p-6 rounded-r-lg">
+                    <h2 className="text-lg font-bold text-success flex items-center gap-2 mb-1">
                         <BookText size={20} /> {t("console.hb_title")}
                     </h2>
-                    <p className="text-emerald-700/70 text-sm mb-4">{t("console.hb_subtitle")}</p>
+                    <p className="text-success text-sm mb-4">{t("console.hb_subtitle")}</p>
 
                     <div className="flex flex-col sm:flex-row items-stretch gap-2">
                         <select
@@ -321,7 +335,7 @@ export default function ConsolePage() {
                                 : hbLangs.map((l) => <option key={l} value={l}>{l}</option>)}
                         </select>
                         <label className="input flex-1 flex items-center gap-2">
-                            <Search size={16} className="text-emerald-500 shrink-0" />
+                            <Search size={16} className="text-success shrink-0" />
                             <input
                                 type="text"
                                 className="grow"
@@ -337,17 +351,17 @@ export default function ConsolePage() {
                         </button>
                     </div>
 
-                    <div className="mt-4 bg-white/70 border border-emerald-200 text-base-content/80 font-mono text-sm rounded-xl overflow-hidden shadow-inner">
+                    <div className="mt-4 bg-base-100 border border-success/30 text-base-content/80 font-mono text-sm rounded-xl overflow-hidden shadow-inner">
                         <div className="max-h-80 overflow-y-auto p-3">
                             {hbResults.length === 0 ? (
-                                <div className="p-3 text-center text-base-content/30">
+                                <div className="p-3 text-center text-base-content/55">
                                     {hbSearched ? t("console.hb_no_results") : t("console.hb_hint")}
                                 </div>
                             ) : (
                                 hbResults.map((line, i) => (
                                     <div
                                         key={i}
-                                        className="px-1 py-0.5 rounded hover:bg-emerald-100/70 cursor-pointer whitespace-pre-wrap break-words"
+                                        className="px-1 py-0.5 rounded hover:bg-success/10 cursor-pointer whitespace-pre-wrap break-words"
                                         onClick={() => copyLine(line)}
                                         title={t("console.hb_copy_hint")}
                                     >
@@ -358,16 +372,16 @@ export default function ConsolePage() {
                         </div>
                     </div>
                     {hbResults.length > 0 && (
-                        <p className="text-emerald-700/60 text-xs mt-2">{t("console.hb_count", { count: hbResults.length })}</p>
+                        <p className="text-success text-xs mt-2">{t("console.hb_count", { count: hbResults.length })}</p>
                     )}
                 </div>
 
                 {/* Danger zone: self reset */}
-                <div className="bg-red-50 border-l-4 border-red-400 p-6 rounded-r-lg">
-                    <h2 className="text-2xl font-bold text-red-800 flex items-center gap-2 mb-1">
+                <div className="bg-error/10 border-l-4 border-error/30 p-6 rounded-r-lg">
+                    <h2 className="text-lg font-bold text-error flex items-center gap-2 mb-1">
                         <AlertTriangle size={20} /> {t("console.reset_title")}
                     </h2>
-                    <p className="text-red-700/80 text-sm mb-4">{t("console.reset_desc")}</p>
+                    <p className="text-error text-sm mb-4">{t("console.reset_desc")}</p>
 
                     {!resetConfirming ? (
                         <button
@@ -379,7 +393,7 @@ export default function ConsolePage() {
                         </button>
                     ) : (
                         <div className="space-y-3">
-                            <p className="text-red-800 font-semibold">{t("console.reset_confirm_q")}</p>
+                            <p className="text-error font-semibold">{t("console.reset_confirm_q")}</p>
                             <div className="flex items-center gap-3">
                                 <button className="btn btn-error" onClick={handleSelfReset} disabled={resetting}>
                                     {resetting
@@ -396,7 +410,7 @@ export default function ConsolePage() {
                 </div>
 
                 <div className="text-center pt-2">
-                    <Link to="/" className="btn btn-wide bg-linear-to-r from-pink-500 to-sky-500 border-none text-white shadow-md shadow-pink-200/50 hover:shadow-pink-300/60 transition-shadow">
+                    <Link to="/" className="btn btn-wide btn-primary border-none shadow-sm   transition-shadow">
                         {t("console.btn_back")}
                     </Link>
                 </div>

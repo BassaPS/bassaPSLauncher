@@ -42,3 +42,7 @@ AGENTS.md
 
 # test dir
 tmp/
+
+# Frontend verification output
+frontend/test-results/
+frontend/playwright-report/

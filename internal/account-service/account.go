@@ -342,3 +342,25 @@ func (a *AccountService) doJSON(method, path, token string, in, out any) (int, e
 	}
 	return resp.StatusCode, nil
 }
+
+// AuthorizeAdmin revalidates privileges remotely for every console operation.
+// Never authorize using a frontend role or the cached startup profile.
+func (a *AccountService) AuthorizeAdmin() error {
+	a.mu.Lock()
+	token := a.token
+	a.mu.Unlock()
+	if token == "" {
+		return fmt.Errorf("administrator authorization required")
+	}
+	var resp struct {
+		User Profile `json:"user"`
+	}
+	status, err := a.doJSON("GET", "/api/launcher/me", token, nil, &resp)
+	if err != nil {
+		return fmt.Errorf("administrator verification failed: %w", err)
+	}
+	if status != http.StatusOK || resp.User.Role != "admin" {
+		return fmt.Errorf("administrator access denied")
+	}
+	return nil
+}

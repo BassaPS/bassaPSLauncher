@@ -16,10 +16,14 @@ import (
 	newsService "cyrene-launcher/internal/news-service"
 
 	"cyrene-launcher/pkg/constant"
+	"cyrene-launcher/pkg/elevation"
+	"errors"
 	"fmt"
 	"log"
 	"os"
 	"path/filepath"
+
+	"golang.org/x/sys/windows"
 
 	"github.com/wailsapp/wails/v3/pkg/application"
 	"github.com/wailsapp/wails/v3/pkg/events"
@@ -50,6 +54,20 @@ func extractFile(embedPath, outPath string) error {
 }
 
 func main() {
+	// Keep the entire proxy/injection lifecycle in the elevated process.
+	// This also covers development builds that have no Windows manifest.
+	relaunched, elevationErr := elevation.Ensure()
+	if elevationErr != nil {
+		if !errors.Is(elevationErr, windows.ERROR_CANCELLED) {
+			_, _ = windows.MessageBox(0,
+				windows.StringToUTF16Ptr("ゲーム起動には管理者権限が必要です。\nランチャーの起動時に表示されるUACを許可してください。\n\n"+elevationErr.Error()),
+				windows.StringToUTF16Ptr("BASSAPS Launcher"), windows.MB_OK|windows.MB_ICONERROR)
+		}
+		return
+	}
+	if relaunched {
+		return
+	}
 	// Extract required files
 	for outPath, embedPath := range constant.RequiredFiles {
 		if !fileExists(outPath.String()) {
@@ -85,7 +103,7 @@ func main() {
 	// Create application
 	app := application.New(application.Options{
 		Name:        "cyrene-launcher",
-		Description: "Cyrene Launcher",
+		Description: "BASSAPS Launcher",
 		Icon:        iconBytes,
 		Services: []application.Service{
 			application.NewService(&fsService.FSService{}),
@@ -94,7 +112,7 @@ func main() {
 			application.NewService(&diffService.DiffService{}),
 			application.NewService(&appService.AppService{}),
 			application.NewService(&newsService.NewsService{}),
-			application.NewService(&consoleService.ConsoleService{}),
+			application.NewService(consoleService.New(acct)),
 			application.NewService(&handbookService.HandbookService{}),
 			application.NewService(march7thHoneyService.New(dllBytes, acct)),
 			application.NewService(acct),
@@ -109,24 +127,26 @@ func main() {
 
 	// Create window
 	window := app.Window.NewWithOptions(application.WebviewWindowOptions{
-		Title: "Cyrene Launcher",
+		Title: "BASSAPS Launcher",
 		Mac: application.MacWindow{
 			InvisibleTitleBarHeight: 50,
 			Backdrop:                application.MacBackdropTranslucent,
 			TitleBar:                application.MacTitleBarHiddenInset,
 		},
-		BackgroundColour: application.NewRGB(252, 242, 248),
+		BackgroundColour: application.NewRGB(17, 17, 19),
 		Width:            1280,
 		Height:           720,
+		MinWidth:         320,
+		MinHeight:        560,
 		URL:              "/",
-		DevToolsEnabled:  true,
+		DevToolsEnabled:  false,
 		Frameless:        true,
-		DisableResize:    true,
+		DisableResize:    false,
 	})
 
 	systemTray := app.SystemTray.New()
 	systemTray.SetIcon(iconBytes)
-	systemTray.SetTooltip("Cyrene Launcher")
+	systemTray.SetTooltip("BASSAPS Launcher")
 
 	// Attach the window to the system tray
 	menu := application.NewMenu()
@@ -138,7 +158,7 @@ func main() {
 	})
 
 	systemTray.SetMenu(menu)
-	
+
 	window.RegisterHook(events.Common.WindowClosing, func(e *application.WindowEvent) {
 		app.Event.Emit("window:close")
 		e.Cancel()

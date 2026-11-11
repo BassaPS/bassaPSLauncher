@@ -183,19 +183,19 @@ export default function DiffPage() {
             <div className="max-w-4xl mx-auto">
                 {/* Header */}
                 <div className="text-center mb-2">
-                    <h1 className="text-4xl font-bold mb-2">
+                    <h1 className="text-xl font-bold mb-2">
                         {t("diff.header_title")}
                     </h1>
                     <p className="">{t("diff.header_desc")}</p>
                 </div>
 
                 {/* Main Content */}
-                <div className="rounded-2xl p-2 space-y-4">
+                <div className="rounded-lg p-2 space-y-4">
 
                     {/* Folder Selection Section */}
                     <div className="pb-2">
-                        <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2">
-                            <Folder className="text-primary" size={24} />
+                        <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                            <Folder className="text-info" size={24} />
                             {t("diff.game_dir_title")}
                         </h2>
 
@@ -241,8 +241,8 @@ export default function DiffPage() {
 
                     {/* Folder Selection Section */}
                     <div className="pb-2">
-                        <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2">
-                            <File className="text-primary" size={24} />
+                        <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                            <File className="text-info" size={24} />
                             {t("diff.diff_file_title")}
                         </h2>
 
@@ -290,7 +290,7 @@ export default function DiffPage() {
                             <button
                                 onClick={handleUpdateGame}
                                 disabled={!diffDir || !gameDir || isLoading.game || isLoading.diff}
-                                className="bg-linear-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 disabled:from-gray-400 disabled:to-gray-500 text-white px-8 py-3 rounded-lg font-medium transition-all duration-200 flex items-center gap-2 shadow-lg hover:shadow-xl disabled:cursor-not-allowed cursor-pointer"
+                                className="btn btn-primary px-8 py-3 rounded-lg font-medium transition-all duration-200 flex items-center gap-2 shadow-sm hover:shadow-sm disabled:cursor-not-allowed cursor-pointer"
                             >
                                 <Settings size={20} />
                                 {isDiffLoading ? t("diff.btn_updating") : t("diff.btn_update_game") }
@@ -300,9 +300,9 @@ export default function DiffPage() {
 
                     {isDiffLoading && (
                         <div className="fixed inset-0 z-50 h-full flex items-center justify-center bg-black/40 backdrop-blur-sm">
-                            <div className="relative w-[90%] max-w-5xl bg-base-100 text-base-content rounded-xl border border-purple-500/50 shadow-lg shadow-purple-500/20">
-                                <div className="border-b border-purple-500/30 px-6 py-4 mb-4 text-center">
-                                    <h3 className="font-bold text-2xl text-transparent bg-clip-text bg-linear-to-r from-pink-400 to-cyan-400">
+                            <div className="relative w-[90%] max-w-5xl bg-base-100 text-base-content rounded-xl border border-base-300 shadow-sm ">
+                                <div className="border-b border-base-300 px-6 py-4 mb-4 text-center">
+                                    <h3 className="font-bold text-lg text-base-content">
                                         {t("diff.modal_update_title")}
                                     </h3>
                                 </div>
@@ -311,15 +311,15 @@ export default function DiffPage() {
                                     <div className="w-full p-4">
                                         <div className="space-y-3">
                                             <div className="flex justify-center items-center text-sm text-white/80">
-                                                <span className="font-bold text-lg text-accent">{stageType}:</span>
+                                                <span className="font-bold text-lg text-base-content">{stageType}:</span>
                                                 <div className="flex items-center gap-4 ml-2">
                                                     {stageType !== 'Cut Data' && <span className="text-white font-bold">{progressUpdate.toFixed(0)} / {maxProgressUpdate.toFixed(0)}</span>}
                                                     {stageType === 'Cut Data' && <span className="text-white font-bold truncate max-w-full overflow-hidden whitespace-nowrap">{messageUpdate}</span>}
                                                 </div>
                                             </div>
-                                            <div className="w-full bg-white/10 rounded-full h-2 overflow-hidden">
+                                            <div className="w-full bg-base-300 rounded-full h-2 overflow-hidden">
                                                 <motion.div
-                                                    className="h-full bg-linear-to-r from-pink-400 via-violet-400 to-sky-400 rounded-full"
+                                                    className="h-full bg-primary rounded-full"
                                                     initial={{ width: 0 }}
                                                     animate={{ width: `${(progressUpdate / maxProgressUpdate) * 100}%` }}
                                                     transition={{ duration: 0.3 }}

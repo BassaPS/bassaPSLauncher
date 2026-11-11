@@ -1,6 +1,7 @@
 import { ExternalLink, LogIn, LogOut } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { AccountService } from "@bindings/cyrene-launcher/internal/account-service";
+import { AppService } from "@bindings/cyrene-launcher/internal/app-service";
 import useAccountStore from "@/stores/accountStore";
 
 // Avatar dropdown in the header. Session restore, login and account events
@@ -16,13 +17,12 @@ export default function AccountButton() {
 
     const openProfile = async () => {
         const base = await AccountService.GetWebBaseURL()
-        const { AppService } = await import("@bindings/cyrene-launcher/internal/app-service")
         await AppService.OpenURL(base + "/profile")
     }
 
     // Skipped the gate: offer a way back in.
     if (!user && skipped) return (
-        <button onClick={() => setSkipped(false)} className="btn btn-ghost btn-sm gap-1 text-base-content/60">
+        <button onClick={() => setSkipped(false)} className="btn btn-ghost btn-sm gap-1 text-base-content/70">
             <LogIn size={15} /> {t("account.sign_in")}
         </button>
     )
@@ -31,16 +31,16 @@ export default function AccountButton() {
 
     return (
         <div className="dropdown dropdown-end">
-            <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
-                <div className="w-8 rounded-full ring-2 ring-pink-200">
+            <button type="button" aria-label={user.name} className="btn btn-ghost btn-circle avatar">
+                <div className="w-8 rounded-full ring-2 ring-base-300">
                     <img
                         src={user.image || "/appicon.png"}
                         alt={user.name}
                         onError={(e) => { (e.currentTarget as HTMLImageElement).src = "/appicon.png" }}
                     />
                 </div>
-            </div>
-            <ul tabIndex={0} className="menu dropdown-content bg-white/95 backdrop-blur-xl border border-pink-100 rounded-xl z-52 mt-3 w-48 p-2 shadow-xl">
+            </button>
+            <ul tabIndex={0} className="menu dropdown-content bg-base-100 backdrop-blur-xl border border-base-300 rounded-xl z-52 mt-3 w-48 p-2 shadow-sm">
                 <li className="menu-title truncate">{user.name}</li>
                 <li>
                     <button onClick={openProfile} className="flex items-center gap-2">

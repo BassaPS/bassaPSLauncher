@@ -1,4 +1,4 @@
-'use client'
+import ModalFrame from "../modalFrame";
 
 import { useEffect, useState, useRef } from 'react'
 import { X, Image as ImageIcon, Plus, Upload, Check } from 'lucide-react'
@@ -105,8 +105,8 @@ export const BackgroundSelector = () => {
   const allBackgrounds = [...extraBackgrounds, ...Object.values(initialImages)]
 
   return (
-    <div className="flex flex-col items-center justify-center gap-4 w-full">
-      <div className="flex flex-col items-center gap-3">
+    <div className="bassaps-background-controls flex items-center justify-end gap-2">
+      <div className="flex items-center gap-2">
         {([
           ...(SHOW_GENSHIN_PROFILE ? [{ id: "genshin" as const, icon: "game-genshin.png", label: t("home.game_profile_genshin") }] : []),
           { id: "starrail", icon: "game-starrail.png", label: t("home.game_profile_starrail") },
@@ -116,14 +116,12 @@ export const BackgroundSelector = () => {
             <div key={game.id} className="tooltip tooltip-right" data-tip={game.label}>
               <motion.button
                 type="button"
-                whileHover={{ y: -5, scale: 1.08 }}
-                whileTap={{ scale: 0.92, opacity: 0.62 }}
                 transition={{ type: "spring", stiffness: 420, damping: 24 }}
                 onClick={() => handleGameSelect(game.id)}
-                className={`relative flex h-12 w-12 items-center justify-center rounded-full border-2 bg-white/65 backdrop-blur-md shadow-md shadow-pink-100/50 transition-all duration-200 ${
+                className={`relative flex h-12 w-12 items-center justify-center rounded-full border-2 bg-base-100 backdrop-blur-md shadow-sm  transition-all duration-200 ${
                   isActive
-                    ? "border-pink-300 ring-2 ring-white/90"
-                    : "border-white/70 hover:border-pink-200"
+                    ? "border-base-300 ring-2 ring-base-300"
+                    : "border-base-300 hover:border-base-300"
                 }`}
                 aria-label={game.label}
               >
@@ -141,7 +139,8 @@ export const BackgroundSelector = () => {
 
       <div className="tooltip tooltip-right" data-tip={t("background.select_bg")}>
         <button
-          className="group btn btn-primary btn-circle flex items-center justify-center shadow-md transition-all duration-300 hover:scale-110 hover:shadow-lg hover:bg-primary/80"
+          aria-label={t("background.select_bg")}
+          className="btn btn-ghost btn-circle border border-base-300"
           onClick={() => setIsOpen(true)}
         >
           <ImageIcon size={22} className="transition-all duration-300 group-hover:rotate-6 group-hover:scale-110" />
@@ -149,8 +148,8 @@ export const BackgroundSelector = () => {
       </div>
 
       {isOpen && (
-        <div className="fixed inset-0 z-40 flex items-center justify-center bg-pink-50/40 backdrop-blur-md pt-10">
-          <div className="bg-white/95 backdrop-blur-xl text-base-content rounded-2xl shadow-2xl shadow-pink-100/50 border border-pink-200/60 p-6 w-[90%] max-w-2xl relative">
+        <ModalFrame open={isOpen} onClose={() => setIsOpen(false)} label={t("background.choose_bg")}>
+          <div className="bg-base-100 backdrop-blur-xl text-base-content rounded-lg shadow-sm  border border-base-300 p-6 w-[90%] max-w-2xl relative">
             <button className="btn btn-ghost btn-circle absolute top-3 right-3" onClick={() => setIsOpen(false)}>
               <X size={20} />
             </button>
@@ -195,7 +194,7 @@ export const BackgroundSelector = () => {
             {/* Crop Modal */}
             {(croppingImage != null && croppingImage != "") && (
               <div className="fixed inset-0 z-60 flex flex-col items-center justify-center bg-black/70 p-4">
-                <div className="relative w-full max-w-5xl h-150 bg-gray-800 rounded-lg">
+                <div className="relative w-full max-w-5xl h-150 bg-base-200 rounded-lg">
                   <Cropper
                     image={croppingImage}
                     crop={crop}
@@ -227,7 +226,7 @@ export const BackgroundSelector = () => {
                 return (
                   <div
                     key={i}
-                    className={`relative rounded-xl overflow-hidden cursor-pointer border-2 transition-all duration-200 ${value === background ? 'border-pink-400 shadow-md shadow-pink-200/50' : 'border-transparent hover:border-pink-200'
+                    className={`relative rounded-xl overflow-hidden cursor-pointer border-2 transition-all duration-200 ${value === background ? 'border-base-300 shadow-sm ' : 'border-transparent hover:border-base-300'
                       }`}
                     onClick={() => handleSelect(value)}
                   >
@@ -248,7 +247,7 @@ export const BackgroundSelector = () => {
               })}
             </div>
           </div>
-        </div>
+        </ModalFrame>
       )}
     </div>
   )

@@ -40,7 +40,7 @@ const LanguageSwitcher = () => {
         btn btn-ghost px-2
           flex items-center gap-1
           text-sm font-semibold tracking-wider
-          text-white/80+
+          text-base-content/80
           select-none
           tooltip tooltip-bottom
         "
@@ -49,7 +49,7 @@ const LanguageSwitcher = () => {
         <span className="uppercase">{current.label}</span>
         {/* Chevron */}
         <svg
-          className={`w-3 h-3 text-white/50 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+          className={`w-3 h-3 text-base-content/65 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -64,9 +64,9 @@ const LanguageSwitcher = () => {
         <ul
           className="
             absolute right-0 mt-2 w-32
-            bg-black/60 backdrop-blur-md
-            border border-white/10 rounded-xl
-            shadow-2xl shadow-black/50
+            bg-base-100 backdrop-blur-md
+            border border-base-300 rounded-xl
+            shadow-sm shadow-black/50
             overflow-hidden z-999
             py-1
             animate-in fade-in slide-in-from-top-2 duration-150
@@ -82,14 +82,14 @@ const LanguageSwitcher = () => {
                     w-full flex items-center gap-3 px-4 py-2.5 text-sm
                     transition-colors duration-150
                     ${isActive
-                      ? "bg-emerald-500/20 text-emerald-400"
-                      : "text-white/70 hover:bg-white/8 hover:text-white"
+                      ? "bg-base-300 text-base-content"
+                      : "text-base-content/80 hover:bg-base-300 hover:text-base-content"
                     }
                   `}
                 >
                   <span className="flex-1 text-left">{lang.native}</span>
                   {isActive && (
-                    <svg className="w-3.5 h-3.5 text-emerald-400 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <svg className="w-3.5 h-3.5 text-base-content shrink-0" fill="currentColor" viewBox="0 0 20 20">
                       <path
                         fillRule="evenodd"
                         d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"

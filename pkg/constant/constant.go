@@ -1,11 +1,12 @@
 package constant
 
-const AppName = "Cyrene Launcher"
+const AppName = "BASSAPS Launcher"
 
 // === Launcher self-update ===
-// Update detection reads releases from the main repo (open-sourced).
-const LauncherGitUrl = "https://api.github.com/repos/Mar7thDev/CyreneLauncher/releases"
-const LauncherFile = "cyrene-launcher.exe"
+// Empty disables self-update until a BASSAPS-owned release source is configured.
+// Never point this at upstream Cyrene releases: they replace this fork's binary.
+const LauncherGitUrl = ""
+const LauncherFile = "BASSAPSLauncher.exe"
 
 const TempUrl = "./temp"
 
@@ -24,7 +25,7 @@ const GenshinServerManifest = "./server-packages/Columbina-GI/cyrene-manifest.js
 // The patch is implemented as a Go-native HTTPS MITM proxy (pkg/patch-proxy).
 // No DLL download or injection is required. The proxy intercepts miHoYo-domain
 // traffic and forwards it to DefaultPatchTargetURL (or a user-configured URL).
-const DefaultPatchTargetURL = "https://march7th.hoyotoon.com"
+const DefaultPatchTargetURL = "https://hsr.bassaps.com"
 
 // SourceGenshin is the downloadable Genshin server package source.
 const SourceGenshin = "genshin"
@@ -66,8 +67,8 @@ const (
 	HSRGameID             = "4ziysqXOQ8" // Honkai: Star Rail (global)
 )
 
-// WebBaseURL is the Cyrene website (account system, news, device login).
-const WebBaseURL = "https://cyrene.hoyotoon.com"
+// WebBaseURL is the BASSAPS portal (registration and launcher device login).
+const WebBaseURL = "https://register.bassaps.com"
 
 // AnnouncementUrl returns the website's server announcements as a JSON
 // []NewsItem array (pinned first). Each entry becomes one card in the News
@@ -75,7 +76,7 @@ const WebBaseURL = "https://cyrene.hoyotoon.com"
 const AnnouncementUrl = WebBaseURL + "/api/launcher/news"
 
 // Project metadata for the About section
-const ProjectName = "Cyrene Launcher"
+const ProjectName = "BASSAPS Launcher"
 const ProjectAuthor = "Firefly Shelter (original) · Cyrene (fork)"
 const ProjectRepoUrl = "https://github.com/Mar7thDev/CyreneLauncher"
 

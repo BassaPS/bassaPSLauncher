@@ -5,13 +5,13 @@ version: '3'
 
 # This information is used to generate the build assets.
 info:
-  companyName: "Cyrene" # The name of the company
-  productName: "Cyrene Launcher" # The name of the application
+  companyName: "BASSAPS" # The name of the company
+  productName: "BASSAPS Launcher" # The name of the application
   productIdentifier: "com.cyrene.launcher" # The unique product identifier
-  description: "Cyrene Launcher" # The application description
+  description: "BASSAPS Launcher" # The application description
   copyright: "@ 2025, Cyrene" # Copyright text
-  comments: "Cyrene Launcher" # Comments
-  version: "1.0.2" # The application version
+  comments: "BASSAPS Launcher" # Comments
+  version: "1.1.2" # The application version
 
 # Dev mode configuration
 dev_mode:

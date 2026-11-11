@@ -1,3 +1,4 @@
+import ModalFrame from "../modalFrame";
 import { CheckUpdateHoneyServer, CheckUpdateLauncher } from "@/helper"
 import useModalStore from "@/stores/modalStore"
 import useSettingStore, { DEFAULT_PATCH_URL, honeyChannelFromTarget, type ServerTarget } from "@/stores/settingStore"
@@ -6,9 +7,9 @@ import { toast } from "react-toastify"
 import { useTranslation } from "react-i18next"
 import { ExternalLink } from "lucide-react"
 
-const PROJECT_NAME = "Cyrene Launcher"
+const PROJECT_NAME = "BASSAPS Launcher"
 const PROJECT_AUTHOR = "Firefly Shelter (original) · Cyrene (fork)"
-const PROJECT_REPO_URL = "https://git.kain.io.vn/Firefly-Shelter/Firefly_Launcher"
+const PROJECT_REPO_URL = "https://github.com/Mar7thDev/CyreneLauncher"
 
 export default function SettingModal({
     isOpen,
@@ -17,7 +18,7 @@ export default function SettingModal({
     isOpen: boolean
     onClose: () => void
 }) {
-    if (!isOpen) return null
+
     const { t } = useTranslation()
     const { setIsOpenSelfUpdateModal, openHoneyDownloadModal, openHoneyUpdateModal } = useModalStore()
     const {
@@ -60,16 +61,18 @@ export default function SettingModal({
     }
     const DownloadHoney = () => { if (honeyChannel) { onClose(); openHoneyDownloadModal(honeyChannel) } }
 
+    if (!isOpen) return null
+
     return (
-        <div className="fixed inset-0 z-10 flex items-center justify-center bg-pink-50/30 backdrop-blur-md">
-            <div className="relative w-[90%] max-w-md bg-white/95 backdrop-blur-xl text-base-content rounded-2xl border border-pink-200/60 shadow-2xl shadow-pink-200/40 p-6 max-h-[90vh] overflow-y-auto">
+        <ModalFrame open={isOpen} onClose={onClose} label={t("setting.title")}>
+            <div className="relative w-[90%] max-w-md bg-base-100 backdrop-blur-xl text-base-content rounded-lg border border-base-300 shadow-sm  p-6 max-h-[90vh] overflow-y-auto">
                 {/* Header */}
                 <div className="flex justify-between items-center mb-6">
-                    <h3 className="font-extrabold text-2xl text-transparent bg-clip-text bg-linear-to-r from-pink-500 to-sky-500">
+                    <h3 className="font-extrabold text-lg text-base-content">
                         {t("setting.title")}
                     </h3>
                     <button
-                        className="btn btn-circle btn-sm bg-pink-50 hover:bg-pink-100 border border-pink-200 text-pink-400"
+                        className="btn btn-circle btn-sm bg-base-200 hover:bg-base-300 border border-base-300 text-base-content/80"
                         onClick={onClose}
                     >
                         ✕
@@ -78,23 +81,23 @@ export default function SettingModal({
 
                 <div className="flex flex-col gap-4">
                     {gameProfile === "genshin" ? (
-                        <div className="p-4 bg-base-200 rounded-xl border border-violet-200/50">
+                        <div className="p-4 bg-base-200 rounded-xl border border-base-300">
                             <h4 className="font-bold text-base mb-1">{t("setting.genshin_settings_title")}</h4>
-                            <p className="text-sm text-base-content/50">{t("setting.genshin_settings_empty")}</p>
+                            <p className="text-sm text-base-content/65">{t("setting.genshin_settings_empty")}</p>
                         </div>
                     ) : (
                         <>
                             {/* Star Rail patch options */}
-                            <div className="p-4 bg-base-200 rounded-xl border border-violet-200/50 flex flex-col gap-4">
+                            <div className="p-4 bg-base-200 rounded-xl border border-base-300 flex flex-col gap-4">
                                 <div>
                                     <h4 className="font-bold text-base mb-1">{t("setting.patch_url_title")}</h4>
-                                    <p className="text-sm text-base-content/50 mb-2">{t("setting.patch_url_desc")}</p>
+                                    <p className="text-sm text-base-content/65 mb-2">{t("setting.patch_url_desc")}</p>
                                     <select
-                                        className="select select-sm w-full bg-white border border-violet-200/60 rounded-lg text-sm focus:outline-none focus:border-violet-400"
+                                        className="select select-sm w-full bg-base-100 border border-base-300 rounded-lg text-sm focus:outline-none focus:border-primary"
                                         value={serverTarget}
                                         onChange={e => setServerTarget(e.target.value as ServerTarget)}
                                     >
-                                        <option value="hoyotoon">{t("setting.server_target_hoyotoon")}</option>
+                                        <option value="hoyotoon">BASSAPS / hsr.bassaps.com</option>
                                         <option value="local_test">{t("setting.server_target_local_test")}</option>
                                         <option value="local_prod">{t("setting.server_target_local_prod")}</option>
                                         <option value="custom">{t("setting.server_target_custom")}</option>
@@ -102,30 +105,30 @@ export default function SettingModal({
                                     {serverTarget === "custom" && (
                                         <input
                                             type="text"
-                                            className="input input-sm w-full mt-2 bg-white border border-violet-200/60 rounded-lg text-sm focus:outline-none focus:border-violet-400"
+                                            className="input input-sm w-full mt-2 bg-base-100 border border-base-300 rounded-lg text-sm focus:outline-none focus:border-primary"
                                             placeholder={DEFAULT_PATCH_URL}
                                             value={patchTargetUrl}
                                             onChange={e => setPatchTargetUrl(e.target.value)}
                                         />
                                     )}
-                                    <p className="text-xs text-base-content/40 mt-1">
+                                    <p className="text-xs text-base-content/60 mt-1">
                                         {honeyChannel ? t("setting.server_target_local_hint", { directory: honeyDirectory }) : t("setting.patch_url_hint")}
                                     </p>
                                 </div>
 
                                 <div>
                                     <h4 className="font-bold text-base mb-1">{t("setting.proxy_port_title")}</h4>
-                                    <p className="text-sm text-base-content/50 mb-2">{t("setting.proxy_port_desc")}</p>
+                                    <p className="text-sm text-base-content/65 mb-2">{t("setting.proxy_port_desc")}</p>
                                     <input
                                         type="number"
                                         min={0}
                                         max={65535}
-                                        className="input input-sm w-full bg-white border border-violet-200/60 rounded-lg text-sm focus:outline-none focus:border-violet-400"
+                                        className="input input-sm w-full bg-base-100 border border-base-300 rounded-lg text-sm focus:outline-none focus:border-primary"
                                         placeholder="8080"
                                         value={proxyPort || ""}
                                         onChange={e => setProxyPort(Math.max(0, Math.min(65535, parseInt(e.target.value, 10) || 0)))}
                                     />
-                                    <p className="text-xs text-base-content/40 mt-1">{t("setting.proxy_port_hint")}</p>
+                                    <p className="text-xs text-base-content/60 mt-1">{t("setting.proxy_port_hint")}</p>
                                 </div>
 
                                 <div>
@@ -140,7 +143,7 @@ export default function SettingModal({
                                     </label>
                                     {rsaPatch && (
                                         <textarea
-                                            className="textarea textarea-sm w-full bg-white border border-violet-200/60 rounded-lg text-xs font-mono focus:outline-none focus:border-violet-400 resize-none"
+                                            className="textarea textarea-sm w-full bg-base-100 border border-base-300 rounded-lg text-xs font-mono focus:outline-none focus:border-primary resize-none"
                                             rows={3}
                                             placeholder={t("setting.rsa_key_hint")}
                                             value={rsaKey}
@@ -161,7 +164,7 @@ export default function SettingModal({
                                     </label>
                                     {webRedirect && (
                                         <textarea
-                                            className="textarea textarea-sm w-full bg-white border border-violet-200/60 rounded-lg text-xs font-mono focus:outline-none focus:border-violet-400 resize-none"
+                                            className="textarea textarea-sm w-full bg-base-100 border border-base-300 rounded-lg text-xs font-mono focus:outline-none focus:border-primary resize-none"
                                             rows={4}
                                             placeholder={t("setting.web_hosts_hint")}
                                             value={webHosts}
@@ -173,14 +176,14 @@ export default function SettingModal({
 
                             {/* Local server (download / update) */}
                             {honeyChannel && (
-                                <div className="p-4 bg-base-200 rounded-xl border border-pink-200/50">
+                                <div className="p-4 bg-base-200 rounded-xl border border-base-300">
                                     <h4 className="font-bold text-base mb-1">{t("setting.honey_server_title", { channel: honeyChannelLabel })}</h4>
-                                    <p className="text-sm text-base-content/50 mb-2">{t("setting.honey_server_desc", { channel: honeyChannelLabel })}</p>
-                                    <p className="text-xs text-base-content/40 mb-3">
+                                    <p className="text-sm text-base-content/65 mb-2">{t("setting.honey_server_desc", { channel: honeyChannelLabel })}</p>
+                                    <p className="text-xs text-base-content/60 mb-3">
                                         {t("setting.honey_server_version")}: {honeyServerVersion || t("setting.honey_server_not_installed")}
                                     </p>
                                     <button
-                                        className="btn btn-sm bg-linear-to-r from-pink-500 to-sky-500 border-none text-white shadow-sm"
+                                        className="btn btn-sm btn-primary border-none shadow-sm"
                                         onClick={honeyServerVersion ? CheckHoneyUpdate : DownloadHoney}
                                     >
                                         {honeyServerVersion ? t("setting.honey_server_check_btn") : t("setting.honey_server_download_btn")}
@@ -189,11 +192,11 @@ export default function SettingModal({
                             )}
 
                             {/* Launcher Update */}
-                            <div className="p-4 bg-base-200 rounded-xl border border-pink-200/50">
+                            <div className="p-4 bg-base-200 rounded-xl border border-base-300">
                                 <h4 className="font-bold text-base mb-1">{t("setting.launcher_update_title")}</h4>
-                                <p className="text-sm text-base-content/50 mb-3">{t("setting.launcher_update_desc")}</p>
+                                <p className="text-sm text-base-content/65 mb-3">{t("setting.launcher_update_desc")}</p>
                                 <button
-                                    className="btn btn-sm bg-linear-to-r from-pink-500 to-sky-500 border-none text-white shadow-sm hover:shadow-pink-200/60 transition-shadow"
+                                    className="btn btn-sm btn-primary border-none shadow-sm  transition-shadow"
                                     onClick={CheckUpdate}
                                 >
                                     {t("setting.launcher_update_btn")}
@@ -201,7 +204,7 @@ export default function SettingModal({
                             </div>
 
                             {/* Closing Option */}
-                            <div className="p-4 bg-base-200 rounded-xl border border-pink-200/50">
+                            <div className="p-4 bg-base-200 rounded-xl border border-base-300">
                                 <h4 className="font-bold text-base mb-3">{t("setting.closing_options_title")}</h4>
                                 <label className="flex items-start gap-3 cursor-pointer select-none">
                                     <input
@@ -217,7 +220,7 @@ export default function SettingModal({
                                     />
                                     <div className="flex flex-col">
                                         <span className="text-sm font-medium">{t("setting.set_dont_ask_again")}</span>
-                                        <span className="text-xs text-base-content/50 mt-0.5">
+                                        <span className="text-xs text-base-content/65 mt-0.5">
                                             {t('setting.closing_auto_desc', { action: closingOption.isMinimize ? t('setting.action_minimize') : t('setting.action_quit') })}
                                         </span>
                                     </div>
@@ -225,7 +228,7 @@ export default function SettingModal({
                             </div>
 
                             {/* Version Info */}
-                            <div className="p-4 bg-base-200 rounded-xl border border-pink-200/50">
+                            <div className="p-4 bg-base-200 rounded-xl border border-base-300">
                                 <h4 className="font-bold text-base mb-3">{t("setting.version_label")}</h4>
                                 <div className="flex flex-wrap gap-2">
                                     <span className="badge badge-outline badge-accent text-xs">
@@ -235,22 +238,22 @@ export default function SettingModal({
                             </div>
 
                             {/* About */}
-                            <div className="p-4 bg-base-200 rounded-xl border border-sky-200/50">
+                            <div className="p-4 bg-base-200 rounded-xl border border-base-300">
                                 <h4 className="font-bold text-base mb-3">{t("setting.about_title")}</h4>
                                 <div className="space-y-2 text-sm">
                                     <div className="flex justify-between items-center">
-                                        <span className="text-base-content/60">{t("setting.project_label")}</span>
-                                        <span className="font-semibold text-transparent bg-clip-text bg-linear-to-r from-pink-500 to-sky-500">{PROJECT_NAME}</span>
+                                        <span className="text-base-content/70">{t("setting.project_label")}</span>
+                                        <span className="font-semibold text-base-content">{PROJECT_NAME}</span>
                                     </div>
                                     <div className="flex justify-between items-center">
-                                        <span className="text-base-content/60">{t("setting.author_label")}</span>
+                                        <span className="text-base-content/70">{t("setting.author_label")}</span>
                                         <span className="font-medium text-right text-xs">{PROJECT_AUTHOR}</span>
                                     </div>
                                     <a
                                         href={PROJECT_REPO_URL}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="flex items-center justify-center gap-2 mt-3 px-3 py-2 bg-white hover:bg-pink-50 border border-pink-200 hover:border-pink-300 rounded-lg text-sm text-base-content/80 hover:text-pink-500 transition-all"
+                                        className="flex items-center justify-center gap-2 mt-3 px-3 py-2 bg-base-100 hover:bg-base-300 border border-base-300 hover:border-base-300 rounded-lg text-sm text-base-content/80 hover:text-base-content/80 transition-all"
                                     >
                                         <ExternalLink size={16} />
                                         <span>{t("setting.repo_link")}</span>
@@ -261,6 +264,6 @@ export default function SettingModal({
                     )}
                 </div>
             </div>
-        </div>
+        </ModalFrame>
     )
 }

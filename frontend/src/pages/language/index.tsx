@@ -133,19 +133,19 @@ export default function LanguagePage() {
             <div className="max-w-4xl mx-auto">
                 {/* Header */}
                 <div className="text-center mb-2">
-                    <h1 className="text-4xl font-bold mb-2">
+                    <h1 className="text-xl font-bold mb-2">
                         {t("language.header_title")}
                     </h1>
                     <p className="">{t("language.header_desc")}</p>
                 </div>
 
                 {/* Main Content */}
-                <div className="rounded-2xl p-2 space-y-4">
+                <div className="rounded-lg p-2 space-y-4">
 
                     {/* Folder Selection Section */}
                     <div className="pb-2">
-                        <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2">
-                            <Folder className="text-primary" size={24} />
+                        <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                            <Folder className="text-info" size={24} />
                             {t("language.game_dir_title")}
                         </h2>
 
@@ -192,8 +192,8 @@ export default function LanguagePage() {
                     {/* Current Language Display */}
                     {(textLang && voiceLang) && (
                         <div className="pb-2">
-                            <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2">
-                                <Globe className="text-primary" size={24} />
+                            <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                                <Globe className="text-info" size={24} />
                                 {t("language.current_languages_title")}
                             </h2>
 
@@ -210,10 +210,10 @@ export default function LanguagePage() {
 
                                 <div className="bg-warning/5 rounded-lg p-2 border border-warning/30">
                                     <div className="flex items-center gap-2 mb-1">
-                                        <Mic size={20} className="text-accent" />
-                                        <span className="font-bold text-accent">{t("language.voice_language")}</span>
+                                        <Mic size={20} className="text-base-content" />
+                                        <span className="font-bold text-base-content">{t("language.voice_language")}</span>
                                     </div>
-                                    <p className="text-2xl font-bold text-accent">
+                                    <p className="text-2xl font-bold text-base-content">
                                         {getLanguageLabel(voiceLang)}
                                     </p>
                                 </div>
@@ -224,8 +224,8 @@ export default function LanguagePage() {
                     {/* Language Selection */}
                     <div className={`transition-opacity duration-300 ${gameDir === "" ? 'opacity-50 pointer-events-none' : ''
                         }`}>
-                        <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2">
-                            <Settings className="text-primary" size={24} />
+                        <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                            <Settings className="text-info" size={24} />
                             {t("language.language_settings_title")}
                         </h2>
 
@@ -250,7 +250,7 @@ export default function LanguagePage() {
                             </div>
 
                             <div className="space-y-3">
-                                <label className="flex text-sm font-medium text-accent items-center gap-2">
+                                <label className="flex text-sm font-medium text-base-content items-center gap-2">
                                     <Mic size={16} />
                                     {t("language.voice_language")}
                                 </label>
@@ -274,7 +274,7 @@ export default function LanguagePage() {
                             <button
                                 onClick={handleSetLanguage}
                                 disabled={!selectedTextLang || !selectedVoiceLang || isSettingLanguage}
-                                className="bg-linear-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 disabled:from-gray-400 disabled:to-gray-500 text-white px-8 py-3 rounded-lg font-medium transition-all duration-200 flex items-center gap-2 shadow-lg hover:shadow-xl disabled:cursor-not-allowed cursor-pointer"
+                                className="btn btn-primary px-8 py-3 rounded-lg font-medium transition-all duration-200 flex items-center gap-2 shadow-sm hover:shadow-sm disabled:cursor-not-allowed cursor-pointer"
                             >
                                 <Settings size={20} />
                                 {isSettingLanguage ? t("language.btn_applying") : t("language.btn_apply")}

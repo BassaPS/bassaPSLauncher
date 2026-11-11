@@ -14,9 +14,20 @@ import (
 // ConsoleService talks to a March7thHoney server's /console/* endpoints so the
 // launcher can run in-game commands and self-reset without opening the chat.
 // Authentication is per-player (UID + password), same as in-game chat.
-type ConsoleService struct{}
+type AdminAuthorizer interface{ AuthorizeAdmin() error }
 
-const defaultServerURL = "https://march7th.hoyotoon.com"
+type ConsoleService struct{ authorizer AdminAuthorizer }
+
+func New(authorizer AdminAuthorizer) *ConsoleService { return &ConsoleService{authorizer: authorizer} }
+
+func (c *ConsoleService) authorize() error {
+	if c.authorizer == nil {
+		return fmt.Errorf("administrator authorization required")
+	}
+	return c.authorizer.AuthorizeAdmin()
+}
+
+const defaultServerURL = "https://hsr.bassaps.com"
 
 type execRequest struct {
 	Username string `json:"username"`
@@ -71,6 +82,9 @@ func postJSON(serverURL, path string, payload any) (bool, string, string) {
 		return false, "", msg
 	}
 
+	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+		return false, "", fmt.Sprintf("HTTP %d: %s", resp.StatusCode, parsed.Message)
+	}
 	if parsed.Retcode != 0 {
 		return false, "", parsed.Message
 	}
@@ -80,6 +94,9 @@ func postJSON(serverURL, path string, payload any) (bool, string, string) {
 // Execute POSTs a command to the server and returns (ok, output, error).
 // An empty command performs a credential check only (used by "Connect").
 func (c *ConsoleService) Execute(serverURL string, uid int, password string, command string) (bool, string, string) {
+	if err := c.authorize(); err != nil {
+		return false, "", err.Error()
+	}
 	return postJSON(serverURL, "/console/exec", execRequest{
 		Username: strconv.Itoa(uid),
 		Password: password,
@@ -90,6 +107,9 @@ func (c *ConsoleService) Execute(serverURL string, uid int, password string, com
 // SelfReset wipes the authenticated player's own gameplay data (account kept).
 // Destructive — the caller must confirm with the user first.
 func (c *ConsoleService) SelfReset(serverURL string, uid int, password string) (bool, string, string) {
+	if err := c.authorize(); err != nil {
+		return false, "", err.Error()
+	}
 	return postJSON(serverURL, "/console/self-reset", selfResetRequest{
 		Username: strconv.Itoa(uid),
 		Password: password,

@@ -1,3 +1,4 @@
+import ModalFrame from "../modalFrame";
 import { motion } from "motion/react"
 import { AppService } from "@bindings/cyrene-launcher/internal/app-service"
 import { toast } from "react-toastify"
@@ -11,26 +12,25 @@ export default function CloseModal({
     isOpen: boolean
     onClose: () => void
 }) {
-    if (!isOpen) return null
+
     const { closingOption, setClosingOption } = useSettingStore()
     const { t } = useTranslation()
 
     return (
-        <div className="fixed inset-0 z-50 h-full flex items-center justify-center bg-pink-50/30 backdrop-blur-md">
+        <ModalFrame open={isOpen} onClose={onClose} label={t("close.title")}>
             <motion.div
                 initial={{ opacity: 0, scale: 0.95, y: 8 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 transition={{ duration: 0.18 }}
-                className="relative w-[90%] max-w-md bg-white/95 backdrop-blur-xl text-base-content rounded-2xl border border-pink-200/60 shadow-2xl shadow-pink-200/40"
+                className="relative w-[90%] max-w-md bg-base-100 backdrop-blur-xl text-base-content rounded-lg border border-base-300 shadow-sm "
             >
-                <div className="border-b border-pink-100 px-6 py-4 flex justify-between items-center">
-                    <h3 className="font-bold text-xl text-transparent bg-clip-text bg-linear-to-r from-pink-500 to-sky-500">
+                <div className="border-b border-base-300 px-6 py-4 flex justify-between items-center">
+                    <h3 className="font-bold text-xl text-base-content">
                         {t("close.title")}
                     </h3>
                     <motion.button
-                        whileHover={{ scale: 1.1, rotate: 90 }}
                         transition={{ duration: 0.2 }}
-                        className="btn btn-circle btn-sm bg-pink-50 hover:bg-pink-100 border border-pink-200 text-pink-400"
+                        className="btn btn-circle btn-sm bg-base-200 hover:bg-base-300 border border-base-300 text-base-content/80"
                         onClick={onClose}
                     >
                         ✕
@@ -50,14 +50,14 @@ export default function CloseModal({
                             checked={!closingOption.isAsk}
                             onChange={(e) => setClosingOption({ isMinimize: closingOption.isMinimize, isAsk: !e.target.checked })}
                         />
-                        <label htmlFor="dontAskAgain" className="text-sm text-base-content/60 cursor-pointer">
+                        <label htmlFor="dontAskAgain" className="text-sm text-base-content/70 cursor-pointer">
                             {t("close.dont_ask")}
                         </label>
                     </div>
 
                     <div className="grid grid-cols-2 gap-3 pt-1">
                         <button
-                            className="btn bg-linear-to-r from-pink-500 to-violet-500 border-none text-white shadow-md shadow-pink-200/50 hover:shadow-pink-300/60 transition-shadow"
+                            className="btn btn-primary border-none shadow-sm   transition-shadow"
                             onClick={async () => {
                                 onClose()
                                 const [success, message] = await AppService.HideApp()
@@ -70,7 +70,7 @@ export default function CloseModal({
                             {t("close.minimize")}
                         </button>
                         <button
-                            className="btn bg-white hover:bg-red-50 border border-red-200 text-red-400 hover:text-red-500 hover:border-red-300 transition-all"
+                            className="btn bg-base-100 hover:bg-error/10 border border-error/30 text-error hover:text-error hover:border-error/30 transition-all"
                             onClick={async () => {
                                 onClose()
                                 const [success, message] = await AppService.CloseApp()
@@ -85,6 +85,6 @@ export default function CloseModal({
                     </div>
                 </div>
             </motion.div>
-        </div>
+        </ModalFrame>
     )
 }
